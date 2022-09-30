@@ -1,0 +1,6 @@
+{
+    "Application":{
+        "port":4000,
+        "mdb":"mongodb://localhost:27017/"
+    }
+}

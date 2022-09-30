@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-container>
+            <v-alert v-if="message"dense text type="success">
+            {{message}}
+            </v-alert>
+            <v-row>
+                <v-col cols="12" md="4">
+                    <v-flex Xs6>
+                        <v-form ref="form" >            
+                            <v-text-field
+                                v-model="name"                    
+                                label="Truck Name"                    
+                            ></v-text-field>  
+
+                            <v-col cols="12">
+                                <v-menu
+                                    v-model="menu2"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="entryDate"
+                                        label="Picker without buttons"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                    v-model="entryDate"
+                                    @input="menu2 = false"
+                                    ></v-date-picker>
+                                </v-menu>
+                                </v-col>
+
+
+                            <v-btn v-if="edit!==true" color="primary" class="mr-4" @click="addTruck(name,entryDate,$event)">Add truck</v-btn>
+                            <v-btn v-if="edit===true" color="success" class="mr-4" @click="updateTruck($event)">Update</v-btn>
+                            <v-btn v-if="edit===true" color="secondary" class="mr-4" @click="cancelTruck($event)">Cancel</v-btn>
+                        </v-form>
+                    </v-flex>
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-flex xs6>
+                        <v-flex xs12 v-for="(truck, index) in trucks" :key="index">
+                            <v-card-title primary-title>
+                                <div>
+                                    <h3 class="headline mb-0">Truck: {{truck.name}}</h3>
+                                    <div>Date: {{truck.entryDate}}</div>
+                                </div>
+                            </v-card-title>
+                            <v-card-actions v-if="edit===false">
+                                <v-btn color="warning" @click="editTruck(truck,index)">Edit</v-btn>
+                                <v-btn color="error" @click="deleteTruck(truck,$event)">Delete</v-btn>
+                            </v-card-actions>
+                            <v-card-actions v-if="edit!==false">
+                                <v-btn disabled color="warning">Edit</v-btn>
+                                <v-btn disabled color="error" >Delete</v-btn>
+                            </v-card-actions>
+                        </v-flex>
+                    </v-flex>
+                </v-col>
+
+            </v-row>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://unpkg.com/vuex@4.0.2/dist/vuex.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <script src="main.js"></script>
+</body>
+</html>
